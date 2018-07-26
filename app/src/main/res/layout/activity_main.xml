@@ -22,6 +22,7 @@
         android:text="S U B W A Y, KOREA"
         android:id="@+id/korea"
         android:textColor="#FFFFFF"
+        android:textSize="20dp"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"/>
