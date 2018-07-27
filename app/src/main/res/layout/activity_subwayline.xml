@@ -9,7 +9,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+
         android:background="#489CFF">
     </FrameLayout>
 
@@ -18,8 +18,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="#489CFF">
+        android:background="#489Cff">
         <TableRow>
             <Button
                 android:text="1 호선"
@@ -54,6 +53,12 @@
             <Button
                 android:text="9호선"
                 android:id="@+id/r9"/>
+        </TableRow>
+        <TableRow>
+            <Button
+                android:text="서울 지하철 노선도"
+                android:layout_span="3"
+                android:id="@+id/total"/>
         </TableRow>
         <TableRow>
             <Button
