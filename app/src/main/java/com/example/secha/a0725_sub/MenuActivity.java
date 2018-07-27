@@ -1,10 +1,12 @@
 package com.example.secha.a0725_sub;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MenuActivity extends Activity {
 
@@ -21,7 +23,11 @@ public class MenuActivity extends Activity {
         sub_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast tmsg=Toast.makeText(getApplicationContext(),"지하철 노선도",Toast.LENGTH_SHORT);
+                tmsg.show();;//토스트 메세지
 
+                Intent intent=new Intent(getApplicationContext(),SubwayLineActivity.class);
+                startActivity(intent);//액티비티 전환
             }
         });
 
