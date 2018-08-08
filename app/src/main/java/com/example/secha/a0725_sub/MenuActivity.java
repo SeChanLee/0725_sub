@@ -37,6 +37,9 @@ public class MenuActivity extends Activity {
                 Toast tmsg=Toast.makeText(getApplicationContext(),"맛 집",Toast.LENGTH_SHORT);
                 tmsg.show();;//토스트 메세지
 
+                Intent intent=new Intent(getApplicationContext(),FamousRestaurant.class);
+                startActivity(intent);//액티비티 전환
+
             }
         });
 
