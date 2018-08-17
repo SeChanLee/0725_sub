@@ -7,109 +7,86 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FamousRestaurant extends MenuActivity {
 
-    private MyDBHelper mDBHelper;
-    private EditText editRail,editRes,editStation;
-    private TextView textResult;
+    MyDBHelper mDBHelper;
+    EditText editRail,editRes,editStation,textrailResult,textresResult,textnameResult;
+    Button btnInsert,btnAll,btnName;
+    SQLiteDatabase sqlDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resdate);
-
         mDBHelper=new MyDBHelper(this);
 
         editRail=(EditText)findViewById(R.id.editRail);
         editRes=(EditText)findViewById(R.id.editRes);
         editStation=(EditText)findViewById(R.id.editStation);
+        textrailResult=(EditText) findViewById(R.id.textrailResult);
+        textresResult=(EditText) findViewById(R.id.textresResult);
+        textnameResult=(EditText) findViewById(R.id.textnameResult);
 
-        textResult=(TextView)findViewById(R.id.textResult);
+        btnInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sqlDB=mDBHelper.getWritableDatabase();
+                sqlDB.execSQL("INSERT INTO restaurant VALUES('"+editRail.getText().toString()+"',"
+                        +editRes.getText().toString()+"',"+editStation.getText().toString()+");");
+                sqlDB.close();
+                Toast.makeText(getApplicationContext(),"입력됨",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sqlDB=mDBHelper.getReadableDatabase();
+                Cursor cursor;
+                cursor=sqlDB.rawQuery("SELECT*FROM restaurant;",null);
+
+                String strrails="호 선"+"\r\n"+"_______"+"\r\n";
+                String strres="식 당"+"\r\n"+"_______"+"\r\n";
+                String strnames="역 이름"+"\r\n"+"_______"+"\r\n";
+
+                while(cursor.moveToNext()) {
+                    strrails += cursor.getString(0)+"\r\n";
+                    strres += cursor.getString(1)+"\r\n";
+                    strnames += cursor.getString(2)+"\r\n";
+                }
+                textrailResult.setText(strrails);
+                textresResult.setText(strres);
+                textnameResult.setText(strnames);
+
+                cursor.close();
+                sqlDB.close();
+
+            }
+        });
 
     }
-    public void mOnclick(View v){
-        SQLiteDatabase db;
-        ContentValues values;
-        String[] projection={"_id","rail","famous","station"};
-        Cursor cur;
 
-        switch(v.getId()){
-
-            case R.id.btnInsert://삽입클릭
-                if(editRail.getText().length()>0 && editRes.getText().length()>0 && editStation.getText().length()>0)
-                {
-                    db=mDBHelper.getWritableDatabase();
-                    values=new ContentValues();
-
-                    values.put("rail",editRail.getText().toString());
-                    values.put("famous",editRes.getText().toString());
-                    values.put("station",editStation.getText().toString());
-
-                    db.insert("restaurant",null,values);
-                    mDBHelper.close();
-                }
-                break;
-
-            case R.id.btnAll://전체검색
-                db=mDBHelper.getReadableDatabase();
-                cur=db.query("restaurant",projection,null,null,null,null,null);
-                if(cur !=null){
-                    showResult(cur);
-                    cur.close();
-                }
-                mDBHelper.close();
-                break;
-
-            case R.id.btnName://이름검색
-                if(editRail.getText().length()>0){
-                    db=mDBHelper.getReadableDatabase();
-                    String rail=editRail.getText().toString();
-                    cur=db.query("restaurant",projection,"rail=?",new String[]{rail},null,null,null);
-                    if(cur != null) {
-                        showResult(cur);
-                        cur.close();
-                    }
-                    mDBHelper.close();
-                }
-                break;
+    public class MyDBHelper extends SQLiteOpenHelper{
+        public MyDBHelper(Context context){
+            super(context,"mytest.db",null,1);
         }
-    }
-
-    private void showResult(Cursor cur) {
-        textResult.setText("");
-        int rail_col=cur.getColumnIndex("rail");
-        int famous_col=cur.getColumnIndex("famous");
-        int station_col=cur.getColumnIndex("station");
-
-        while(cur.moveToNext()) {
-            String rail =cur.getString(rail_col);
-            String famous =cur.getString(famous_col);
-            String station =cur.getString(station_col);
-
-            textResult.append(rail+","+famous+","+station+"\n");
+        public void onCreate(SQLiteDatabase db){
+            db.execSQL("CREATE TABLE restaurant(rail CHAR(10) PRIMARY KEY,famous CHAR(10),station CHAR(10));");
         }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS restaurant");
+            onCreate(db);
+
+        }
+
     }
 
 }
 
-
-
-class MyDBHelper extends SQLiteOpenHelper{
-    public MyDBHelper(Context context){
-        super(context,"mytest.db",null,1);
-    }
-    public void onCreate(SQLiteDatabase db){
-        db.execSQL("CREATE TABLE restaurant(_id INTEGER PRIMARY KEY AUTOINCREMENT,"+"rail TEXT,famous TEXT,station TEXT);");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db,int oldVersion,int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS restaurant");
-        onCreate(db);
-
-    }
-
-}

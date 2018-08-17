@@ -8,22 +8,19 @@
         android:id="@+id/editRail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="호 선 입 력"
-        android:selectAllOnFocus="true"/>
+        android:hint="호 선 입 력" />
 
     <EditText
         android:id="@+id/editRes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="맛 집 입 력"
-        android:selectAllOnFocus="true"/>
+        android:hint="맛 집 입 력" />
 
     <EditText
         android:id="@+id/editStation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="역 입 력"
-        android:selectAllOnFocus="true"/>
+        android:hint="역 입 력" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -35,33 +32,40 @@
                 android:id="@+id/btnInsert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="mOnClick"
                 android:text="삽 입"/>
             <Button
                 android:id="@+id/btnAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="mOnClick"
                 android:text="전 체 검 색"/>
             <Button
                 android:id="@+id/btnName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="mOnClick"
                 android:text="이 름 검 색"/>
         </TableRow>
     </TableLayout>
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fadeScrollbars="false"
-        android:padding="4dp">
-        <TextView
+        android:orientation="horizontal">
+        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textResult"
-            android:textSize="20dp"/>
+            android:id="@+id/textrailResult"
+            android:layout_weight="1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textresResult"
+            android:layout_weight="1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textnameResult"
+            android:layout_weight="1"/>
 
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>
